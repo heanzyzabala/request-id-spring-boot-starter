@@ -1,10 +1,10 @@
-package com.heanzyzabala.requestidspringbootstarter;
+package com.heanzyzabala.requestid;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class RequestIdSpringBootStarterApplicationTests {
+class RequestIdAutoConfigurationTests {
 
 	@Test
 	void contextLoads() {
