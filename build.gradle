@@ -2,11 +2,62 @@ plugins {
 	id 'org.springframework.boot' version '2.2.7.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
+  id 'maven-publish'
+	id 'signing'
 }
 
 group = 'com.heanzyzabala'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+
+java {
+	withJavadocJar()
+	withSourcesJar()
+}
+
+publishing {
+  publications {
+		mavenJava(MavenPublication) {
+			artifactId = 'request-id-spring-boot-starter'
+			versionMapping {
+				usage('java-api') {
+					fromResolutionOf('runtimeClasspath')
+				}
+				usage('java-runtime') {
+					fromResolutionResult()
+				}
+			}
+			from components.java
+			pom {
+				name = 'Request ID Sprint Boot Starter'
+				description = ''
+				licenses {
+					license {
+						name = 'The Apache License, Version 2.0'
+						url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+					}
+				}
+				developers {
+					developer {
+						id = 'heanzyzabala'
+						name = 'Heanzy Zabala'
+						email = 'heanzy.zabala@gmail.com'
+					}
+				}
+			}
+		}
+	}
+	repositories {
+		maven {
+			def snapshots =  'https://oss.sonatype.org/content/repositories/snapshots/'
+      def releases = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+			url = version.endsWith('SNAPSHOT') ? snapshots : releases
+		}
+	}
+}
+
+signing {
+	sign publishing.publications.mavenJava
+}
 
 repositories {
 	mavenCentral()
