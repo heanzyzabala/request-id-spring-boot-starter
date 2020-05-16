@@ -7,7 +7,7 @@ import java.util.List;
 @ConfigurationProperties(value = "request-id")
 public class RequestIdFilterProperties {
 
-    private String headerName;
+    private String headerName = "X-Request-Id";
     private List<String> requiredPaths;
 
     public RequestIdFilterProperties() {
