@@ -2,13 +2,14 @@ package com.heanzyzabala.requestid;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @ConfigurationProperties(value = "request-id")
 public class RequestIdFilterProperties {
 
-    private String headerName = "X-Request-Id";
-    private List<String> requiredPaths;
+    private String headerName = "X-Request-ID";
+    private List<String> requiredPaths = new ArrayList<>();
 
     public RequestIdFilterProperties() {
     }
