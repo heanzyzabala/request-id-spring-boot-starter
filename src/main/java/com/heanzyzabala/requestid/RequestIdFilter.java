@@ -1,5 +1,6 @@
 package com.heanzyzabala.requestid;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -9,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 public class RequestIdFilter extends OncePerRequestFilter {
 
     private RequestIdFilterProperties properties;
@@ -24,7 +26,8 @@ public class RequestIdFilter extends OncePerRequestFilter {
         String requestIdHeader = request.getHeader(properties.getHeaderName());
         String uri = request.getRequestURI();
         if(isRequired(uri) && requestIdHeader == null) {
-            throw new NoRequestIdProvidedException(uri, properties.getHeaderName());
+            log.error("Missing request ID: {} in path: {}", properties.getHeaderName(), uri);
+            throw new MissingRequestIdException(properties.getHeaderName(), uri);
         }
     }
 
