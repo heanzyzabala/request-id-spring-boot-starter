@@ -16,7 +16,7 @@ public class RequestIdAutoConfiguration {
     private RequestIdFilterProperties properties;
 
     @Bean
-    public RequestIdFilter filter() {
+    public RequestIdFilter requestIdFilter() {
         log.info("Configured request id: {} and required paths: {}", properties.getHeaderName(), properties.getRequiredPaths());
         return new RequestIdFilter(properties, new AntPathMatcher());
     }
