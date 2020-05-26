@@ -32,7 +32,7 @@ publishing {
 	repositories {
 		maven {
 			def snapshots = 'https://oss.sonatype.org/content/repositories/snapshots/'
-      def releases = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
+      		def releases = 'https://oss.sonatype.org/service/local/staging/deploy/maven2/'
 			url = version.endsWith('SNAPSHOT') ? snapshots : releases
 			credentials {
 				username = ossrhUsername
