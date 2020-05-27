@@ -13,10 +13,15 @@ import java.io.IOException;
 @Slf4j
 public class RequestIdFilter extends OncePerRequestFilter {
 
-    private RequestIdFilterProperties properties;
-    private PathMatcher matcher;
+    private final RequestId requestId;
+    private final RequestIdFilterProperties properties;
+    private final PathMatcher matcher;
 
-    public RequestIdFilter(RequestIdFilterProperties properties, PathMatcher matcher) {
+    public RequestIdFilter(RequestId requestId,
+                           RequestIdFilterProperties properties,
+                           PathMatcher matcher) {
+        log.info("Configured request id: {} and required paths: {}", properties.getHeaderName(), properties.getRequiredPaths());
+        this.requestId = requestId;
         this.properties = properties;
         this.matcher = matcher;
     }
@@ -28,6 +33,13 @@ public class RequestIdFilter extends OncePerRequestFilter {
         if(isRequired(uri) && requestIdHeader == null) {
             log.error("Missing request ID: {} in path: {}", properties.getHeaderName(), uri);
             throw new MissingRequestIdException(properties.getHeaderName(), uri);
+        } else {
+            try {
+                requestId.set("requestId", requestIdHeader);
+                filterChain.doFilter(request, response);
+            } finally {
+                requestId.remove("requestId");
+            }
         }
     }
 
