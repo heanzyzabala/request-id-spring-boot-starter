@@ -16,8 +16,12 @@ public class RequestIdAutoConfiguration {
     private RequestIdFilterProperties properties;
 
     @Bean
-    public RequestIdFilter requestIdFilter() {
-        log.info("Configured request id: {} and required paths: {}", properties.getHeaderName(), properties.getRequiredPaths());
-        return new RequestIdFilter(properties, new AntPathMatcher());
+    public RequestId r() {
+        return new ThreadLocalRequestId();
+    }
+
+    @Bean
+    public RequestIdFilter requestIdFilter(RequestId requestId) {
+        return new RequestIdFilter(requestId, properties, new AntPathMatcher());
     }
 }
