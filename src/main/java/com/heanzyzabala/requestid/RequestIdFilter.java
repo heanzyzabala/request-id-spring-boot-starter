@@ -30,16 +30,15 @@ public class RequestIdFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestIdHeader = request.getHeader(properties.getHeaderName());
         String uri = request.getRequestURI();
-        if(isRequired(uri) && requestIdHeader == null) {
+        if (isRequired(uri) && requestIdHeader == null) {
             log.error("Missing request ID: {} in path: {}", properties.getHeaderName(), uri);
             throw new MissingRequestIdException(properties.getHeaderName(), uri);
-        } else {
-            try {
-                requestId.set("requestId", requestIdHeader);
-                filterChain.doFilter(request, response);
-            } finally {
-                requestId.remove("requestId");
-            }
+        }
+        try {
+            requestId.set("requestId", requestIdHeader);
+            filterChain.doFilter(request, response);
+        } finally {
+            requestId.remove("requestId");
         }
     }
 
